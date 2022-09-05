@@ -30,10 +30,10 @@ public class UnbindOtherCommand extends JSimpleCommand {
                         sender.sendMessage(new At(sender.getUser().getId()).plus(" 解绑失败！请再试一次！如果这个问题一直出现，请联系管理员。"));
                         QQBot.INSTANCE.getLogger().error("Failed to unbind! (user: " + sender.getUser().getId() + ", tryToUnbind: " + arg + ", tryToUnbindOther: " + qqAccount + ")", e);
                     }
-                }else {
+                } else {
                     sender.sendMessage(new At(sender.getUser().getId()).plus(" 对方没有绑定这个游戏名！"));
                 }
-            }else {
+            } else {
                 sender.sendMessage("Only users can run this command!");
             }
         });

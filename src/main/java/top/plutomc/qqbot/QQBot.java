@@ -95,6 +95,10 @@ public final class QQBot extends JavaPlugin {
         }
     }
 
+    public static SQLManager getSqlManager() {
+        return sqlManager;
+    }
+
     @Override
     public void onEnable() {
         getLogger().info(" ");
@@ -145,10 +149,6 @@ public final class QQBot extends JavaPlugin {
 
         getLogger().info("Plugin enabled.");
         getLogger().info(" ");
-    }
-
-    public static SQLManager getSqlManager() {
-        return sqlManager;
     }
 
     @Override
