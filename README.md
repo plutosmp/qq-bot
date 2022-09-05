@@ -1,7 +1,7 @@
 # qq-bot
 
 [![CodeFactor](https://www.codefactor.io/repository/github/plutosmp/qq-bot/badge/master)](https://www.codefactor.io/repository/github/plutosmp/qq-bot/overview/master)<br>
-PlutoMC 服务器的 QQ 机器人，使用 Java 语言基于 Mirai 机器人框架 打造。
+PlutoMC 服务器的 QQ 机器人插件，使用 Java 语言基于 Mirai 机器人框架 打造。
 
 ### 特性
 
