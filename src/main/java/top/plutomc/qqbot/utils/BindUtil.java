@@ -120,4 +120,38 @@ public class BindUtil {
                 });
         return atomicBoolean.get();
     }
+
+    public static boolean isWaitingToVerify(UUID uuid) {
+        AtomicBoolean atomicBoolean = new AtomicBoolean(false);
+        SQLManager sqlManager = BindUtil.sqlManager;
+        sqlManager.executeSQLBatch("use " + QQBot.getConfig().getString("database.database") + ";");
+        sqlManager.createQuery()
+                .inTable(QQBot.getConfig().getString("database.waiting-to-verify-table"))
+                .selectColumns("uuid", "name", "qq")
+                .addCondition("uuid", uuid.toString())
+                .build().execute((sqlQuery -> {
+                    atomicBoolean.set(sqlQuery.getResultSet().next());
+                    return sqlQuery.getResultSet();
+                }), (exception, sqlAction) -> {
+                });
+        return atomicBoolean.get();
+    }
+
+    public static void completeVerify(UUID uuid) throws SQLException {
+        SQLManager sqlManager = BindUtil.sqlManager;
+        sqlManager.executeSQLBatch("use " + QQBot.getConfig().getString("database.database") + ";");
+        sqlManager.createDelete(QQBot.getConfig().getString("database.waiting-to-verify-table"))
+                .addCondition("uuid", uuid.toString())
+                .build()
+                .execute();
+    }
+
+    public static void verify(UUID uuid, String name, long qqAccount) throws SQLException {
+        SQLManager sqlManager = BindUtil.sqlManager;
+        sqlManager.executeSQLBatch("use " + QQBot.getConfig().getString("database.database") + ";");
+        sqlManager.createReplace(QQBot.getConfig().getString("database.waiting-to-verify-table"))
+                .setColumnNames("uuid", "name", "qq")
+                .setParams(uuid.toString(), name.toLowerCase(), qqAccount)
+                .execute();
+    }
 }

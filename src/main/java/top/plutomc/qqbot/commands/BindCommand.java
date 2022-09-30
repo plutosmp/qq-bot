@@ -11,6 +11,7 @@ import top.plutomc.qqbot.QQBot;
 import top.plutomc.qqbot.utils.BindUtil;
 import top.plutomc.qqbot.utils.MCPlayerUtil;
 
+import java.sql.SQLException;
 import java.util.UUID;
 
 public final class BindCommand extends JRawCommand {
@@ -27,8 +28,28 @@ public final class BindCommand extends JRawCommand {
                         sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 正在尝试进行绑定操作...")));
                         UUID uuid = MCPlayerUtil.getUUID(args.get(0).contentToString());
                         if (!BindUtil.isBound(uuid)) {
-                            BindUtil.bind(uuid, args.get(0).contentToString(), sender.getUser().getId());
-                            sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 绑定成功！现在你可以进行游戏了。（请勿恶意绑定不是你的游戏名，否则将会遭到封禁！）")));
+                            if (!BindUtil.isWaitingToVerify(uuid)) {
+                                QQBot.EXECUTOR_SERVICE.submit(() -> {
+                                    try {
+                                        Thread.sleep(1000L * 60L * 5L);
+                                    } catch (InterruptedException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                    if (BindUtil.isWaitingToVerify(uuid)) {
+                                        try {
+                                            BindUtil.completeVerify(uuid);
+                                            sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText("对于 ")).plus(new PlainText(args.get(0).contentToString())).plus(new PlainText(" 的绑定验证已经超时！请重新执行绑定操作。")));
+                                        } catch (SQLException e) {
+                                            throw new RuntimeException(e);
+                                        }
+                                    }
+                                });
+                                BindUtil.verify(uuid, args.get(0).contentToString(), sender.getUser().getId());
+                                // sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 绑定成功！现在你可以进行游戏了。（请勿恶意绑定不是你的游戏名，否则将会遭到封禁！）")));
+                                sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 请在五分钟内使用 ").plus(new PlainText(args.get(0).contentToString()).plus(new PlainText(" 这个账号进入服务器来完成绑定验证！如果你现在无法进行验证，请在能够进行验证的时候重新进行绑定操作！")))));
+                            }else {
+                                sender.sendMessage(new At(sender.getUser().getId()).plus(" 已经提交绑定这个账号的请求了，请使用这个账号加入服务器来完成验证！"));
+                            }
                         } else {
                             sender.sendMessage(new At(sender.getUser().getId())
                                     .plus(new PlainText(" 绑定失败！这个游戏名已经绑定给 ").plus(new At(BindUtil.getBind(uuid)))).plus(" 了！如果这个游戏名是你的却被别人绑定了，请联系群主。"));

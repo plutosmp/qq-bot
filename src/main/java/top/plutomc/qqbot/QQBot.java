@@ -77,6 +77,7 @@ public final class QQBot extends JavaPlugin {
         config.addDefault("database.password", "123456");
         config.addDefault("database.database", "minecraft");
         config.addDefault("database.table", "qq_bind");
+        config.addDefault("database.waiting-to-verify-table", "qq_bind_waiting_to_verify");
 
         config.options().copyDefaults(true);
 
@@ -135,7 +136,16 @@ public final class QQBot extends JavaPlugin {
 
         sqlManager.executeSQLBatch("use " + config.getString("database.database") + ";");
         try {
+            // Create main data table
             sqlManager.createTable(config.getString("database.table"))
+                    .addColumn("uuid", "LONGTEXT")
+                    .addColumn("name", "LONGTEXT")
+                    .addColumn("qq", "BIGINT")
+                    .setIndex(IndexType.INDEX, "qq_index", "qq")
+                    .build().execute();
+
+            // Create verify data table
+            sqlManager.createTable(config.getString("database.waiting-to-verify-table"))
                     .addColumn("uuid", "LONGTEXT")
                     .addColumn("name", "LONGTEXT")
                     .addColumn("qq", "BIGINT")
