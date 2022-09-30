@@ -28,7 +28,7 @@ public final class BindsCommand extends JRawCommand {
                     stringBuilder.append(" " + name);
                 }
                 sender.sendMessage(new At(sender.getUser().getId())
-                        .plus(new PlainText("你当前绑定了以下游戏名，以空格分割。 (" + names.size() + " 个)：" + stringBuilder)));
+                        .plus(new PlainText("你当前绑定了以下账号，以空格分割。 (" + names.size() + " 个)：" + stringBuilder)));
             } else {
                 sender.sendMessage("Only users can run this command!");
             }

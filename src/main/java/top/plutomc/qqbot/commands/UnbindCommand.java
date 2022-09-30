@@ -31,7 +31,7 @@ public final class UnbindCommand extends JSimpleCommand {
                         QQBot.INSTANCE.getLogger().error("Failed to unbind! (user: " + sender.getUser().getId() + ", tryToUnbind: " + arg + ")", e);
                     }
                 } else {
-                    sender.sendMessage(new At(sender.getUser().getId()).plus(" 你没有绑定这个游戏名！"));
+                    sender.sendMessage(new At(sender.getUser().getId()).plus(" 你没有绑定这个账号！"));
                 }
             } else {
                 sender.sendMessage("Only users can run this command!");

@@ -45,14 +45,14 @@ public final class BindCommand extends JRawCommand {
                                     }
                                 });
                                 BindUtil.verify(uuid, args.get(0).contentToString(), sender.getUser().getId());
-                                // sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 绑定成功！现在你可以进行游戏了。（请勿恶意绑定不是你的游戏名，否则将会遭到封禁！）")));
+                                // sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 绑定成功！现在你可以进行游戏了。（请勿恶意绑定不是你的账号，否则将会遭到封禁！）")));
                                 sender.sendMessage(new At(sender.getUser().getId()).plus(new PlainText(" 请在五分钟内使用 ").plus(new PlainText(args.get(0).contentToString()).plus(new PlainText(" 这个账号进入服务器来完成绑定验证！如果你现在无法进行验证，请在能够进行验证的时候重新进行绑定操作！")))));
                             }else {
                                 sender.sendMessage(new At(sender.getUser().getId()).plus(" 已经提交绑定这个账号的请求了，请使用这个账号加入服务器来完成验证！"));
                             }
                         } else {
                             sender.sendMessage(new At(sender.getUser().getId())
-                                    .plus(new PlainText(" 绑定失败！这个游戏名已经绑定给 ").plus(new At(BindUtil.getBind(uuid)))).plus(" 了！如果这个游戏名是你的却被别人绑定了，请联系群主。"));
+                                    .plus(new PlainText(" 绑定失败！这个账号已经绑定给 ").plus(new At(BindUtil.getBind(uuid)))).plus(" 了！如果这个账号是你的却被别人绑定了，请联系群主。"));
                         }
                     } catch (Exception e) {
                         QQBot.INSTANCE.getLogger().error("Failed to bind! (user: " + sender.getUser().getId() + ", tryToBind: " + args.get(0).contentToString() + ")", e);
