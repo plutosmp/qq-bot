@@ -9,9 +9,11 @@ import net.mamoe.mirai.Bot;
 import net.mamoe.mirai.console.command.CommandManager;
 import net.mamoe.mirai.console.plugin.jvm.JavaPlugin;
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescriptionBuilder;
+import net.mamoe.mirai.contact.User;
 import net.mamoe.mirai.event.GlobalEventChannel;
 import net.mamoe.mirai.event.Listener;
 import net.mamoe.mirai.event.events.BotOnlineEvent;
+import net.mamoe.mirai.event.events.MemberLeaveEvent;
 import okhttp3.OkHttpClient;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,6 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -36,6 +40,7 @@ public final class QQBot extends JavaPlugin {
     private static FileConfiguration config;
     private static Bot targetBot;
     private static Listener<BotOnlineEvent> botOnlineListener;
+    private static Listener<MemberLeaveEvent> memberLeaveEventListener;
     private static SQLManager sqlManager;
 
     private QQBot() {
@@ -68,6 +73,7 @@ public final class QQBot extends JavaPlugin {
         config = YamlConfiguration.loadConfiguration(configFile);
 
         config.addDefault("botSettings.account", 10086L);
+        config.addDefault("groupSettings.chatGroup", 114514L);
         config.addDefault("misc.rules", List.of("Example"));
         config.addDefault("database.host", "127.0.0.1");
         config.addDefault("database.port", 3306);
@@ -108,6 +114,28 @@ public final class QQBot extends JavaPlugin {
                 getLogger().info("Target bot (" + event.getBot().getId() + ") logged!");
                 getLogger().info(" ");
             }
+        });
+
+        memberLeaveEventListener = GlobalEventChannel.INSTANCE.subscribeAlways(MemberLeaveEvent.class, event -> {
+            User user = event.getUser();
+            long id = user.getId();
+
+            if (!BindUtil.getBinds(id).isEmpty()) {
+                Set<UUID> binds = BindUtil.getBinds(id);
+                binds.forEach(uuid -> {
+                    try {
+                        BindUtil.unBind(uuid);
+                    } catch (SQLException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+
+            if (targetBot.getGroup(config.getLong("groupSettings.chatGroup")) == null) {
+                return;
+            }
+
+            targetBot.getGroup(config.getLong("groupSettings.chatGroup")).sendMessage("用户 " + id + " 已退出群聊。");
         });
 
         CommandManager.INSTANCE.registerCommand(new RulesCommand(), true);
