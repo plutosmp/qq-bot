@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class BindUtil {
+public final class BindUtil {
     private static SQLManager sqlManager;
 
     private BindUtil() {
