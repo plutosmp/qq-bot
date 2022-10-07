@@ -68,8 +68,6 @@ public final class QQBot extends JavaPlugin {
         config = YamlConfiguration.loadConfiguration(configFile);
 
         config.addDefault("botSettings.account", 10086L);
-        config.addDefault("groupSettings.chatGroup", 114514L);
-        config.addDefault("groupSettings.testGroup", 1919810L);
         config.addDefault("misc.rules", List.of("Example"));
         config.addDefault("database.host", "127.0.0.1");
         config.addDefault("database.port", 3306);
@@ -82,10 +80,6 @@ public final class QQBot extends JavaPlugin {
         config.options().copyDefaults(true);
 
         saveConfig();
-
-        QQBot.INSTANCE.getLogger().info("Bot account: " + config.getLong("botSettings.account"));
-        QQBot.INSTANCE.getLogger().info("Server chat group: " + config.getLong("groupSettings.chatGroup"));
-        QQBot.INSTANCE.getLogger().info("Test group: " + config.getLong("groupSettings.testGroup"));
     }
 
     private static void saveConfig() {
