@@ -2,7 +2,7 @@ package top.plutomc.qqbot.utils;
 
 import java.util.UUID;
 
-public class UUIDUtil {
+public final class UUIDUtil {
     private UUIDUtil() {
     }
 
