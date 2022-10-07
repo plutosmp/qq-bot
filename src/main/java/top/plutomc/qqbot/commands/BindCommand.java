@@ -46,6 +46,9 @@ public final class BindCommand extends JRawCommand {
                 return;
             }
 
+            BindUtil.verify(uuid, ((PlainText) args.get(0)).getContent(), sender.getUser().getId());
+            MsgUtil.send2User(sender, new PlainText("已经提交绑定请求啦！请在五分钟之内使用这个账号加入服务器来完成绑定验证！"));
+
             QQBot.EXECUTOR_SERVICE.submit(() -> {
                 try {
                     Thread.sleep(1000L * 60L * 5L);
