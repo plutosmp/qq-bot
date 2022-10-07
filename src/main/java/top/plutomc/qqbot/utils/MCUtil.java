@@ -10,8 +10,8 @@ import top.plutomc.qqbot.QQBot;
 import java.io.IOException;
 import java.util.UUID;
 
-public final class MCPlayerUtil {
-    private MCPlayerUtil() {
+public final class MCUtil {
+    private MCUtil() {
     }
 
     public static UUID getUUID(String name) throws IOException {

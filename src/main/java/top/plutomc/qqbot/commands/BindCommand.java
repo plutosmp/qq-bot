@@ -9,7 +9,7 @@ import net.mamoe.mirai.message.data.PlainText;
 import org.jetbrains.annotations.NotNull;
 import top.plutomc.qqbot.QQBot;
 import top.plutomc.qqbot.utils.BindUtil;
-import top.plutomc.qqbot.utils.MCPlayerUtil;
+import top.plutomc.qqbot.utils.MCUtil;
 import top.plutomc.qqbot.utils.MsgUtil;
 
 import java.sql.SQLException;
@@ -34,7 +34,7 @@ public final class BindCommand extends JRawCommand {
 
         try {
             MsgUtil.send2User(sender, new PlainText("正在尝试进行绑定操作..."));
-            UUID uuid = MCPlayerUtil.getUUID(args.get(0).contentToString());
+            UUID uuid = MCUtil.getUUID(args.get(0).contentToString());
 
             if (BindUtil.isBound(uuid)) {
                 MsgUtil.send2User(sender, new PlainText("绑定失败！这个账号已经绑定给 ").plus(new At(BindUtil.getBind(uuid))).plus(new PlainText(" 啦。如果对方恶意绑定了你的账号，请联系管理员！")));

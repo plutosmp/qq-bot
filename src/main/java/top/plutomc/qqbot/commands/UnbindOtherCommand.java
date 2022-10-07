@@ -7,7 +7,7 @@ import net.mamoe.mirai.console.command.java.JSimpleCommand;
 import net.mamoe.mirai.message.data.PlainText;
 import top.plutomc.qqbot.QQBot;
 import top.plutomc.qqbot.utils.BindUtil;
-import top.plutomc.qqbot.utils.MCPlayerUtil;
+import top.plutomc.qqbot.utils.MCUtil;
 import top.plutomc.qqbot.utils.MsgUtil;
 
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class UnbindOtherCommand extends JSimpleCommand {
             }
 
             try {
-                BindUtil.unBind(MCPlayerUtil.getUUID(arg));
+                BindUtil.unBind(MCUtil.getUUID(arg));
                 MsgUtil.send2User(sender, new PlainText("解绑成功！"));
             } catch (SQLException | IOException e) {
                 QQBot.INSTANCE.getLogger().error("Failed to unbind! (user: " + sender.getUser().getId() + ", tryToUnbind: " + arg + ")", e);
