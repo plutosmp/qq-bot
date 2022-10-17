@@ -18,7 +18,7 @@ dependencies {
     implementation('org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT')
     implementation('com.squareup.okhttp3:okhttp:4.10.0')
     implementation('cc.carm.lib:easysql-hikaricp:0.4.6')
-    implementation('mysql:mysql-connector-java:8.0.30')
+    implementation('mysql:mysql-connector-java:8.0.31')
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_9
